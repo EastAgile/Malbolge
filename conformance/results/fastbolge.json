@@ -1,0 +1,308 @@
+{
+ "command": [
+  "interpreter/target/release/fastbolge",
+  "-m",
+  "{mode}"
+ ],
+ "counts": {
+  "PASS": 37,
+  "FAIL": 0,
+  "INFO": 5
+ },
+ "results": [
+  {
+   "name": "prog-samples-cat",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-crackme-0",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-crackme-1",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-encrypted",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-helloworld-eu-0",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-helloworld-eu-1",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-sep",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "prog-samples-wat",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "eof-value",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "echo-two",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "echo-newline",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "echo-high-byte",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "rot",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "rot-twice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "crz",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "crz-chain",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "crz-after-input",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "movd-into-fill",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "movd-twice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "movd-thrice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "output-high",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "whitespace",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "jump",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "nop-run",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "encrypt-cycle",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "wrap-nops",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 3: fastbolge: cell [3] = 29552 cannot be encrypted (the reference interpreter indexes out of bounds here)",
+   "seconds": 0.003
+  },
+  {
+   "name": "load-invalid-char",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "load-too-long",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "ub-empty",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 2: fastbolge: program has 0 instruction(s); the reference initialisation reads before the start of memory",
+   "seconds": 0.002
+  },
+  {
+   "name": "ub-one-instruction",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 2: fastbolge: program has 1 instruction(s); the reference initialisation reads before the start of memory",
+   "seconds": 0.001
+  },
+  {
+   "name": "ub-self-modify",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 3: fastbolge: cell [0] = 13 cannot be encrypted (the reference interpreter indexes out of bounds here)",
+   "seconds": 0.002
+  },
+  {
+   "name": "ub-exec-nonprintable",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 3: fastbolge: cell [2] = 128 is not an instruction (the reference interpreter hangs here)",
+   "seconds": 0.002
+  },
+  {
+   "name": "f20-eof-value",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "f20-echo",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "f20-rot",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "f20-rot-twice",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "f20-crz",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "f20-movd-fill",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "f20-movd-chain",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.006
+  },
+  {
+   "name": "f20-movd-far",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.005
+  },
+  {
+   "name": "f20-no-whitespace-skip",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "f20-nop-run",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  }
+ ]
+}

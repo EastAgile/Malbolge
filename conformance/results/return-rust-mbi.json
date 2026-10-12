@@ -1,0 +1,236 @@
+{
+ "command": [
+  "return-mbi"
+ ],
+ "counts": {
+  "PASS": 24,
+  "FAIL": 3,
+  "INFO": 5
+ },
+ "results": [
+  {
+   "name": "prog-samples-cat",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "did not halt within 10s (got 367865 bytes)",
+   "seconds": 10.0
+  },
+  {
+   "name": "prog-samples-crackme-0",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.566
+  },
+  {
+   "name": "prog-samples-crackme-1",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.586
+  },
+  {
+   "name": "prog-samples-encrypted",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 74: got !h\\x06qp\\x14\"|\\x07\\x12w\\x13 want 2\\x1f\\xfb<&@\\xfd\\x103\\xae\\x03Q",
+   "seconds": 0.015
+  },
+  {
+   "name": "prog-samples-helloworld-eu-0",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.016
+  },
+  {
+   "name": "prog-samples-helloworld-eu-1",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.015
+  },
+  {
+   "name": "prog-samples-sep",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.621
+  },
+  {
+   "name": "prog-samples-wat",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.142
+  },
+  {
+   "name": "eof-value",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\x00 want \\xa8",
+   "seconds": 0.003
+  },
+  {
+   "name": "echo-two",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "echo-newline",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "echo-high-byte",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "rot",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "rot-twice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "crz",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "crz-chain",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "crz-after-input",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "movd-into-fill",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "movd-twice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "movd-thrice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "output-high",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "whitespace",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "jump",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.005
+  },
+  {
+   "name": "nop-run",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.008
+  },
+  {
+   "name": "encrypt-cycle",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.036
+  },
+  {
+   "name": "wrap-nops",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 101: note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.",
+   "seconds": 0.768
+  },
+  {
+   "name": "load-invalid-char",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.097
+  },
+  {
+   "name": "load-too-long",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.733
+  },
+  {
+   "name": "ub-empty",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 101: note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.",
+   "seconds": 0.083
+  },
+  {
+   "name": "ub-one-instruction",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 101: note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.",
+   "seconds": 0.076
+  },
+  {
+   "name": "ub-self-modify",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 101: note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.",
+   "seconds": 0.074
+  },
+  {
+   "name": "ub-exec-nonprintable",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "crashes (signal 9)",
+   "seconds": 0.014
+  }
+ ]
+}

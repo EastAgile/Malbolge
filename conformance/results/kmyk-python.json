@@ -1,0 +1,238 @@
+{
+ "command": [
+  "python3",
+  "kmyk.py",
+  "execute"
+ ],
+ "counts": {
+  "PASS": 13,
+  "FAIL": 14,
+  "INFO": 5
+ },
+ "results": [
+  {
+   "name": "prog-samples-cat",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got  want Hello, cat!\\n",
+   "seconds": 0.069
+  },
+  {
+   "name": "prog-samples-crackme-0",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got  want Crackme by zb3\\nCode:\\nBad code!\\n",
+   "seconds": 0.066
+  },
+  {
+   "name": "prog-samples-crackme-1",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got  want Crackme by zb3\\nCode:\\nBad code!\\n",
+   "seconds": 0.082
+  },
+  {
+   "name": "prog-samples-encrypted",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.041
+  },
+  {
+   "name": "prog-samples-helloworld-eu-0",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.038
+  },
+  {
+   "name": "prog-samples-helloworld-eu-1",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.039
+  },
+  {
+   "name": "prog-samples-sep",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got  want Separator char:\\nText:\\nh,e,l,l,o, ,w,o,r,...",
+   "seconds": 0.07
+  },
+  {
+   "name": "prog-samples-wat",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "first 256 bytes differ: got  want Press enter for more zb3!zb3zb3zb3zb3zb3...",
+   "seconds": 0.051
+  },
+  {
+   "name": "eof-value",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.035
+  },
+  {
+   "name": "echo-two",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.03
+  },
+  {
+   "name": "echo-newline",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.032
+  },
+  {
+   "name": "echo-high-byte",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.042
+  },
+  {
+   "name": "rot",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\x00 want \\x17",
+   "seconds": 0.037
+  },
+  {
+   "name": "rot-twice",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\x00\\x00 want \\xfc\\xdc",
+   "seconds": 0.043
+  },
+  {
+   "name": "crz",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got T want r",
+   "seconds": 0.042
+  },
+  {
+   "name": "crz-chain",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\x00\\x00 want \\x128",
+   "seconds": 0.041
+  },
+  {
+   "name": "crz-after-input",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\xfa want \\x19",
+   "seconds": 0.042
+  },
+  {
+   "name": "movd-into-fill",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\x00 want \\x17",
+   "seconds": 0.034
+  },
+  {
+   "name": "movd-twice",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\xec\\x85 want J\\x13",
+   "seconds": 0.032
+  },
+  {
+   "name": "movd-thrice",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\x00 want \\xfc",
+   "seconds": 0.034
+  },
+  {
+   "name": "output-high",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\x00\\x00\\x00 want \\xde\\xde\\xdb",
+   "seconds": 0.033
+  },
+  {
+   "name": "whitespace",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.034
+  },
+  {
+   "name": "jump",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.045
+  },
+  {
+   "name": "nop-run",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.033
+  },
+  {
+   "name": "encrypt-cycle",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.049
+  },
+  {
+   "name": "wrap-nops",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 1: AssertionError",
+   "seconds": 0.1
+  },
+  {
+   "name": "load-invalid-char",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.041
+  },
+  {
+   "name": "load-too-long",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.058
+  },
+  {
+   "name": "ub-empty",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 1: RuntimeError: No active exception to reraise",
+   "seconds": 0.055
+  },
+  {
+   "name": "ub-one-instruction",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 0 with output ",
+   "seconds": 0.033
+  },
+  {
+   "name": "ub-self-modify",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 1: AssertionError",
+   "seconds": 0.045
+  },
+  {
+   "name": "ub-exec-nonprintable",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 1: RuntimeError: No active exception to reraise",
+   "seconds": 0.046
+  }
+ ]
+}

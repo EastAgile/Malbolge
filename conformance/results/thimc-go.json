@@ -1,0 +1,236 @@
+{
+ "command": [
+  "thimc-go"
+ ],
+ "counts": {
+  "PASS": 3,
+  "FAIL": 24,
+  "INFO": 5
+ },
+ "results": [
+  {
+   "name": "prog-samples-cat",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 12: got \\n want ",
+   "seconds": 0.006
+  },
+  {
+   "name": "prog-samples-crackme-0",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 31: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "prog-samples-crackme-1",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 31: got \\n want ",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-encrypted",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 76: got \\xc3\\xbb<&@\\xc3\\xbd\\x103\\xc2\\xae\\x03Q\\n want \\xfb<&@\\xfd\\x103\\xae\\x03Q",
+   "seconds": 0.005
+  },
+  {
+   "name": "prog-samples-helloworld-eu-0",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 163: got \\n want ",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-helloworld-eu-1",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 163: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "prog-samples-sep",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 44: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "prog-samples-wat",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "eof-value",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\xc2\\xa8\\n want \\xa8",
+   "seconds": 0.003
+  },
+  {
+   "name": "echo-two",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 2: got \\n want ",
+   "seconds": 0.003
+  },
+  {
+   "name": "echo-newline",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "echo-high-byte",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\xc2\\xa8\\n want \\xff",
+   "seconds": 0.004
+  },
+  {
+   "name": "rot",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "rot-twice",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\xc3\\xbc\\xc3\\x9c\\n want \\xfc\\xdc",
+   "seconds": 0.003
+  },
+  {
+   "name": "crz",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "crz-chain",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 2: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "crz-after-input",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.003
+  },
+  {
+   "name": "movd-into-fill",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "movd-twice",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 2: got \\n want ",
+   "seconds": 0.005
+  },
+  {
+   "name": "movd-thrice",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\xc3\\xbc\\n want \\xfc",
+   "seconds": 0.005
+  },
+  {
+   "name": "output-high",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 0: got \\xc3\\x9e\\xc3\\x9e\\xc3\\x9b\\n want \\xde\\xde\\xdb",
+   "seconds": 0.005
+  },
+  {
+   "name": "whitespace",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.005
+  },
+  {
+   "name": "jump",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "nop-run",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.004
+  },
+  {
+   "name": "encrypt-cycle",
+   "mode": "classic",
+   "verdict": "FAIL",
+   "detail": "output differs at byte 1: got \\n want ",
+   "seconds": 0.005
+  },
+  {
+   "name": "wrap-nops",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 2: \tthimc/malbolge/main.go:159 +0x165",
+   "seconds": 0.006
+  },
+  {
+   "name": "load-invalid-char",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "load-too-long",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.006
+  },
+  {
+   "name": "ub-empty",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 1: usage: thimc-go <file.mal>",
+   "seconds": 0.002
+  },
+  {
+   "name": "ub-one-instruction",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 2: \tthimc/malbolge/main.go:155 +0x157",
+   "seconds": 0.004
+  },
+  {
+   "name": "ub-self-modify",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 2: \tthimc/malbolge/main.go:159 +0x165",
+   "seconds": 0.006
+  },
+  {
+   "name": "ub-exec-nonprintable",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 0 with output \\n",
+   "seconds": 0.003
+  }
+ ]
+}
