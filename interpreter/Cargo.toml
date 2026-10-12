@@ -1,0 +1,27 @@
+[package]
+name = "fastbolge"
+version = "0.1.0"
+edition = "2021"
+description = "A fast, spec-precise Malbolge interpreter (classic Malbolge and fast20 Malbolge Unshackled)"
+license = "MIT"
+repository = "https://github.com/EastAgile/Malbolge"
+
+[lib]
+crate-type = ["rlib", "cdylib"]
+
+[[bin]]
+name = "fastbolge"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+# Tests run optimised: the fast20 cases execute tens of millions of steps.
+[profile.dev]
+opt-level = 2
+
+[profile.test]
+opt-level = 2

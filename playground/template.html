@@ -1,0 +1,236 @@
+<title>Fastbolge Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one working column; editor pair on top, run bar, output console below. */
+:root {
+  --bg: #f3f4f1; --panel: #ffffff; --ink: #1b2422; --muted: #5d6965; --line: #d6dbd7;
+  --accent: #0f6e63; --accent-ink: #ffffff; --warn: #a14a12; --ok: #2d6a2e;
+  --console: #12201d; --console-ink: #d7efe8;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1514; --panel: #161f1d; --ink: #e2ebe8; --muted: #93a29d; --line: #2a3734;
+  --accent: #3fb7a5; --accent-ink: #06201c; --warn: #f0a46c; --ok: #8fd18f;
+  --console: #0a0f0e; --console-ink: #cfece4; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1514; --panel: #161f1d; --ink: #e2ebe8; --muted: #93a29d; --line: #2a3734;
+  --accent: #3fb7a5; --accent-ink: #06201c; --warn: #f0a46c; --ok: #8fd18f;
+  --console: #0a0f0e; --console-ink: #cfece4; color-scheme: dark }
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 14px }
+footer a { color: var(--accent) }
+.wrap { max-width: 1100px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 40px; display: grid; gap: 18px }
+header { display: grid; gap: 6px }
+h1 { font: 700 clamp(28px, 4.5vw, 44px)/1.05 var(--display); letter-spacing: -0.01em; margin: 0; text-wrap: balance }
+h1 .trit { font-family: var(--mono); font-weight: 400; color: var(--accent); font-size: 0.55em; vertical-align: 0.35em; margin-left: 0.4em }
+.lede { color: var(--muted); max-width: 68ch; margin: 0 }
+.grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr } }
+.field { display: grid; gap: 6px; min-width: 0 }
+label, .label { font: 600 11px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted) }
+textarea { width: 100%; min-height: 220px; resize: vertical; background: var(--panel); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px; padding: 12px; font: 13px/1.45 var(--mono); word-break: break-all }
+#input { min-height: 220px }
+textarea:focus, select:focus, input:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
+.meta { font: 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: end }
+.bar .field { min-width: 140px }
+select, input[type=number] { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px;
+  padding: 8px 10px; font: 13px var(--mono) }
+button { font: 600 14px var(--body); border-radius: 6px; padding: 9px 18px; cursor: pointer; border: 1px solid var(--accent) }
+#run { background: var(--accent); color: var(--accent-ink) }
+#stop { background: transparent; color: var(--ink); border-color: var(--line) }
+button:disabled { opacity: 0.45; cursor: default }
+.spacer { flex: 1 }
+.console { background: var(--console); color: var(--console-ink); border-radius: 8px; overflow: hidden; display: grid }
+.console-head { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 10px 14px; border-bottom: 1px solid rgba(127,127,127,.25);
+  font: 12px var(--mono); font-variant-numeric: tabular-nums }
+.console-head .status { font-weight: 600 }
+.status.ok { color: var(--ok) } .status.warn { color: var(--warn) }
+pre#out { margin: 0; padding: 14px; min-height: 160px; max-height: 420px; overflow: auto; font: 13px/1.5 var(--mono);
+  white-space: pre-wrap; word-break: break-word }
+pre#out .esc { opacity: 0.55 }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; color: var(--muted); font-size: 13.5px }
+.notes p { margin: 0 }
+.notes b { color: var(--ink); font-weight: 600 }
+code { font-family: var(--mono); font-size: 0.92em }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Fastbolge Playground <span class="trit">0t2120</span></h1>
+    <p class="lede">Run Malbolge in your browser on the WebAssembly build of fastbolge. It uses the same engine as the native interpreter and passes the same conformance suite, checked against Ben Olmstead's 1998 reference interpreter.</p>
+  </header>
+
+  <div class="grid">
+    <div class="field">
+      <label for="prog">Program</label>
+      <textarea id="prog" spellcheck="false"></textarea>
+      <div class="meta" id="progmeta"></div>
+    </div>
+    <div class="field">
+      <label for="input">Standard input</label>
+      <textarea id="input" spellcheck="false" placeholder="Bytes the program reads. After the last one it reads end-of-file."></textarea>
+      <div class="meta">Newlines are sent as typed.</div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="field">
+      <label for="sample">Example</label>
+      <select id="sample"></select>
+    </div>
+    <div class="field">
+      <label for="mode">Dialect</label>
+      <select id="mode">
+        <option value="classic">Classic (1998)</option>
+        <option value="fast20">fast20 (Unshackled, 19 trits)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="limit">Step limit</label>
+      <input id="limit" type="number" min="1000" step="1000000" value="1000000000">
+    </div>
+    <div class="spacer"></div>
+    <button id="stop" disabled>Stop</button>
+    <button id="run">Run</button>
+  </div>
+
+  <section class="console" aria-live="polite">
+    <div class="console-head">
+      <span class="status" id="status">Ready</span>
+      <span id="steps">0 steps</span>
+      <span id="time"></span>
+      <span id="rate"></span>
+    </div>
+    <pre id="out"></pre>
+  </section>
+
+  <div class="notes">
+    <p><b>Classic</b> is Malbolge as the reference interpreter runs it: 10-trit words, 59,049 cells, whitespace skipped on load, and output truncated to a byte. Where the reference would hang or read out of bounds, fastbolge stops and says why.</p>
+    <p><b>fast20</b> is the 19-trit Malbolge Unshackled dialect that MalbolgeLisp ships with. Memory is 3<sup>19</sup> cells, created a chunk at a time as the program touches it.</p>
+    <p><b>Output</b> is shown as text. Bytes outside printable ASCII appear dimmed as <code>\xNN</code>, so a program printing the end-of-file value (59048 mod 256) shows <code>\xa8</code>.</p>
+  </div>
+
+  <footer>Open source under the MIT license. Source, benchmarks and the conformance suite are on <a href="https://github.com/EastAgile/Malbolge" target="_blank" rel="noopener">GitHub</a>. Built by <a href="https://www.eastagile.com" target="_blank" rel="noopener">East Agile</a>.</footer>
+</div>
+
+<script>
+const WASM_B64 = "__WASM__";
+const SAMPLES = __SAMPLES__;
+
+const workerSrc = `
+let x, mem;
+const enc = new TextEncoder();
+function put(bytes){ const p = x.fb_alloc(bytes.length); new Uint8Array(x.memory.buffer, p, bytes.length).set(bytes); return p; }
+function read(p, n){ return new Uint8Array(x.memory.buffer, p, n).slice(); }
+function msg(){ return new TextDecoder().decode(read(x.fb_message_ptr(), x.fb_message_len())); }
+onmessage = async (e) => {
+  const d = e.data;
+  if (d.type === 'init') { const r = await WebAssembly.instantiate(d.wasm, {}); x = r.instance.exports; postMessage({type:'ready'}); return; }
+  if (d.type === 'run') {
+    const prog = d.program, inp = d.input;
+    let p = put(prog); const lr = x.fb_load(d.mode === 'fast20' ? 1 : 0, p, prog.length); x.fb_free(p, prog.length);
+    if (lr !== 0) { postMessage({type:'done', status:'load', message: msg(), steps:0}); return; }
+    p = put(inp); x.fb_set_input(p, inp.length); x.fb_free(p, inp.length);
+    const t0 = performance.now(); let target = 0, st;
+    const slice = d.mode === 'fast20' ? 20000000 : 5000000;
+    do {
+      target = Math.min(target + slice, d.limit);
+      st = x.fb_run(target);
+      const out = read(x.fb_output_ptr(), x.fb_output_len()); x.fb_clear_output();
+      postMessage({type:'progress', out, steps: x.fb_steps(), ms: performance.now() - t0});
+    } while (st === 1 && target < d.limit);
+    postMessage({type:'done', status: st === 0 ? 'halted' : st === 1 ? 'limit' : 'ub', message: st === 3 ? msg() : '', steps: x.fb_steps(), ms: performance.now() - t0});
+  }
+};`;
+
+const $ = (id) => document.getElementById(id);
+const wasmBytes = Uint8Array.from(atob(WASM_B64), c => c.charCodeAt(0));
+let worker = null, running = false, outBytes = [];
+
+function newWorker() {
+  if (worker) worker.terminate();
+  worker = new Worker(URL.createObjectURL(new Blob([workerSrc], {type: 'text/javascript'})));
+  worker.onmessage = onMsg;
+  worker.postMessage({type: 'init', wasm: wasmBytes});
+}
+
+function fmtOut(bytes) {
+  const frag = document.createDocumentFragment();
+  let text = '';
+  const flush = () => { if (text) { frag.append(text); text = ''; } };
+  for (const b of bytes) {
+    if (b === 10 || b === 9 || (b >= 32 && b < 127)) text += String.fromCharCode(b);
+    else { flush(); const s = document.createElement('span'); s.className = 'esc'; s.textContent = '\\x' + b.toString(16).padStart(2, '0'); frag.append(s); }
+  }
+  flush();
+  return frag;
+}
+
+function setStatus(text, cls) { const s = $('status'); s.textContent = text; s.className = 'status ' + (cls || ''); }
+function stats(steps, ms) {
+  $('steps').textContent = Math.round(steps).toLocaleString('en-US') + ' steps';
+  $('time').textContent = ms != null ? (ms / 1000).toFixed(2) + ' s' : '';
+  $('rate').textContent = ms > 50 ? (steps / ms / 1000).toFixed(0) + ' M steps/s' : '';
+}
+
+function onMsg(e) {
+  const d = e.data;
+  if (d.type === 'ready') return;
+  if (d.type === 'progress') {
+    if (d.out.length) { $('out').append(fmtOut(d.out)); outBytes.push(...d.out); }
+    stats(d.steps, d.ms);
+  }
+  if (d.type === 'done') {
+    running = false; $('run').disabled = false; $('stop').disabled = true;
+    stats(d.steps, d.ms);
+    if (d.status === 'halted') setStatus('Halted', 'ok');
+    else if (d.status === 'limit') setStatus('Stopped at the step limit', 'warn');
+    else if (d.status === 'load') setStatus('Load error: ' + d.message, 'warn');
+    else setStatus('Undefined behaviour: ' + d.message, 'warn');
+  }
+}
+
+function run() {
+  if (running) return;
+  running = true; outBytes = [];
+  $('out').textContent = ''; setStatus('Running'); stats(0, null);
+  $('run').disabled = true; $('stop').disabled = false;
+  const enc = new TextEncoder();
+  const limit = Math.max(1000, Number($('limit').value) || 1e9);
+  // Programs are bytes; the textarea holds them as Latin-1-safe text.
+  const program = Uint8Array.from($('prog').value, ch => ch.charCodeAt(0) & 255);
+  worker.postMessage({type: 'run', mode: $('mode').value, program, input: enc.encode($('input').value), limit});
+}
+
+function stop() {
+  if (!running) return;
+  newWorker();
+  running = false; $('run').disabled = false; $('stop').disabled = true;
+  setStatus('Stopped', 'warn');
+}
+
+function loadSample(i) {
+  const s = SAMPLES[i];
+  $('prog').value = s.program; $('input').value = s.input; $('mode').value = s.mode;
+  updateMeta();
+}
+function updateMeta() {
+  const n = $('prog').value.replace(/\s/g, '').length;
+  $('progmeta').textContent = n.toLocaleString('en-US') + ' instructions' + (SAMPLES[$('sample').value]?.credit ? ' \u00b7 ' + SAMPLES[$('sample').value].credit : '');
+}
+
+SAMPLES.forEach((s, i) => { const o = document.createElement('option'); o.value = i; o.textContent = s.name; $('sample').append(o); });
+$('sample').addEventListener('change', (e) => loadSample(+e.target.value));
+$('prog').addEventListener('input', updateMeta);
+$('run').addEventListener('click', run);
+$('stop').addEventListener('click', stop);
+document.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') run(); });
+newWorker();
+loadSample(0);
+</script>

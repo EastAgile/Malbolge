@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  interpreter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: interpreter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+          components: clippy, rustfmt
+      - run: cargo fmt --check
+      - run: cargo clippy --release --all-targets -- -D warnings
+      - run: cargo test
+      - name: Conformance suite (native)
+        run: |
+          cargo build --release
+          python3 ../conformance/run.py --quiet -- ./target/release/fastbolge -m {mode}
+      - name: Conformance suite (WebAssembly)
+        run: |
+          cargo build --release --target wasm32-unknown-unknown --lib
+          cp target/wasm32-unknown-unknown/release/fastbolge.wasm web/
+          python3 ../conformance/run.py --quiet -- node web/cli.mjs -m {mode}

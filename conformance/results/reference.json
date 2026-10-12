@@ -1,0 +1,236 @@
+{
+ "command": [
+  "ref-malbolge"
+ ],
+ "counts": {
+  "PASS": 27,
+  "FAIL": 0,
+  "INFO": 5
+ },
+ "results": [
+  {
+   "name": "prog-samples-cat",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.005
+  },
+  {
+   "name": "prog-samples-crackme-0",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "prog-samples-crackme-1",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "prog-samples-encrypted",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "prog-samples-helloworld-eu-0",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "prog-samples-helloworld-eu-1",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "prog-samples-sep",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "prog-samples-wat",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.005
+  },
+  {
+   "name": "eof-value",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "echo-two",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "echo-newline",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "echo-high-byte",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "rot",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "rot-twice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "crz",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "crz-chain",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "crz-after-input",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "movd-into-fill",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "movd-twice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "movd-thrice",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "output-high",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "whitespace",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "jump",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "nop-run",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "encrypt-cycle",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.004
+  },
+  {
+   "name": "wrap-nops",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "crashes (signal 11)",
+   "seconds": 0.014
+  },
+  {
+   "name": "load-invalid-char",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "load-too-long",
+   "mode": "classic",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.003
+  },
+  {
+   "name": "ub-empty",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "hangs",
+   "seconds": 3.001
+  },
+  {
+   "name": "ub-one-instruction",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 0 with output ",
+   "seconds": 0.004
+  },
+  {
+   "name": "ub-self-modify",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "exits 0 with output \\r",
+   "seconds": 0.003
+  },
+  {
+   "name": "ub-exec-nonprintable",
+   "mode": "classic",
+   "verdict": "INFO",
+   "detail": "hangs",
+   "seconds": 3.001
+  }
+ ]
+}

@@ -1,0 +1,82 @@
+{
+ "command": [
+  "fast20"
+ ],
+ "counts": {
+  "PASS": 10,
+  "FAIL": 0,
+  "INFO": 0
+ },
+ "results": [
+  {
+   "name": "f20-eof-value",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "f20-echo",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "f20-rot",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.001
+  },
+  {
+   "name": "f20-rot-twice",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "f20-crz",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.001
+  },
+  {
+   "name": "f20-movd-fill",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "f20-movd-chain",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.001
+  },
+  {
+   "name": "f20-movd-far",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "f20-no-whitespace-skip",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  },
+  {
+   "name": "f20-nop-run",
+   "mode": "fast20",
+   "verdict": "PASS",
+   "detail": "",
+   "seconds": 0.002
+  }
+ ]
+}

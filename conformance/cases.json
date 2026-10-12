@@ -1,0 +1,357 @@
+[
+ {
+  "name": "prog-samples-cat",
+  "mode": "classic",
+  "program": "cases/prog-samples-cat.mb",
+  "note": "cat.mb from samples",
+  "input": "cases/prog-samples-cat.in",
+  "expect": "halt",
+  "output": "cases/prog-samples-cat.out"
+ },
+ {
+  "name": "prog-samples-crackme-0",
+  "mode": "classic",
+  "program": "cases/prog-samples-crackme-0.mb",
+  "note": "crackme.mb from samples",
+  "input": "cases/prog-samples-crackme-0.in",
+  "expect": "halt",
+  "output": "cases/prog-samples-crackme-0.out"
+ },
+ {
+  "name": "prog-samples-crackme-1",
+  "mode": "classic",
+  "program": "cases/prog-samples-crackme-1.mb",
+  "note": "crackme.mb from samples",
+  "input": "cases/prog-samples-crackme-1.in",
+  "expect": "halt",
+  "output": "cases/prog-samples-crackme-1.out"
+ },
+ {
+  "name": "prog-samples-encrypted",
+  "mode": "classic",
+  "program": "cases/prog-samples-encrypted.mb",
+  "note": "encrypted.mb from samples",
+  "input": "cases/prog-samples-encrypted.in",
+  "expect": "halt",
+  "output": "cases/prog-samples-encrypted.out"
+ },
+ {
+  "name": "prog-samples-helloworld-eu-0",
+  "mode": "classic",
+  "program": "cases/prog-samples-helloworld-eu-0.mb",
+  "note": "helloworld-eu.mb from samples",
+  "input": "cases/prog-samples-helloworld-eu-0.in",
+  "expect": "halt",
+  "output": "cases/prog-samples-helloworld-eu-0.out"
+ },
+ {
+  "name": "prog-samples-helloworld-eu-1",
+  "mode": "classic",
+  "program": "cases/prog-samples-helloworld-eu-1.mb",
+  "note": "helloworld-eu.mb from samples",
+  "input": "cases/prog-samples-helloworld-eu-1.in",
+  "expect": "halt",
+  "output": "cases/prog-samples-helloworld-eu-1.out"
+ },
+ {
+  "name": "prog-samples-sep",
+  "mode": "classic",
+  "program": "cases/prog-samples-sep.mb",
+  "note": "sep.mb from samples",
+  "input": "cases/prog-samples-sep.in",
+  "expect": "halt",
+  "output": "cases/prog-samples-sep.out"
+ },
+ {
+  "name": "prog-samples-wat",
+  "mode": "classic",
+  "program": "cases/prog-samples-wat.mb",
+  "note": "wat.mb from samples",
+  "input": "cases/prog-samples-wat.in",
+  "expect": "runs",
+  "prefix": 256,
+  "output": "cases/prog-samples-wat.out"
+ },
+ {
+  "name": "eof-value",
+  "mode": "classic",
+  "program": "cases/eof-value.mb",
+  "note": "EOF reads 59048; output is a mod 256 (0xa8)",
+  "expect": "halt",
+  "output": "cases/eof-value.out"
+ },
+ {
+  "name": "echo-two",
+  "mode": "classic",
+  "program": "cases/echo-two.mb",
+  "note": "input then output",
+  "input": "cases/echo-two.in",
+  "expect": "halt",
+  "output": "cases/echo-two.out"
+ },
+ {
+  "name": "echo-newline",
+  "mode": "classic",
+  "program": "cases/echo-newline.mb",
+  "note": "newline is not translated",
+  "input": "cases/echo-newline.in",
+  "expect": "halt",
+  "output": "cases/echo-newline.out"
+ },
+ {
+  "name": "echo-high-byte",
+  "mode": "classic",
+  "program": "cases/echo-high-byte.mb",
+  "note": "input bytes are unsigned",
+  "input": "cases/echo-high-byte.in",
+  "expect": "halt",
+  "output": "cases/echo-high-byte.out"
+ },
+ {
+  "name": "rot",
+  "mode": "classic",
+  "program": "cases/rot.mb",
+  "note": "move d off the code, rotate [d] right",
+  "expect": "halt",
+  "output": "cases/rot.out"
+ },
+ {
+  "name": "rot-twice",
+  "mode": "classic",
+  "program": "cases/rot-twice.mb",
+  "note": "rotate two cells",
+  "expect": "halt",
+  "output": "cases/rot-twice.out"
+ },
+ {
+  "name": "crz",
+  "mode": "classic",
+  "program": "cases/crz.mb",
+  "note": "crazy op with a=0",
+  "expect": "halt",
+  "output": "cases/crz.out"
+ },
+ {
+  "name": "crz-chain",
+  "mode": "classic",
+  "program": "cases/crz-chain.mb",
+  "note": "crazy op uses the accumulator",
+  "expect": "halt",
+  "output": "cases/crz-chain.out"
+ },
+ {
+  "name": "crz-after-input",
+  "mode": "classic",
+  "program": "cases/crz-after-input.mb",
+  "note": "crazy op on input",
+  "input": "cases/crz-after-input.in",
+  "expect": "halt",
+  "output": "cases/crz-after-input.out"
+ },
+ {
+  "name": "movd-into-fill",
+  "mode": "classic",
+  "program": "cases/movd-into-fill.mb",
+  "note": "d = [0] points into crz-initialised memory",
+  "expect": "halt",
+  "output": "cases/movd-into-fill.out"
+ },
+ {
+  "name": "movd-twice",
+  "mode": "classic",
+  "program": "cases/movd-twice.mb",
+  "note": "follow two pointers through initialised memory",
+  "expect": "halt",
+  "output": "cases/movd-twice.out"
+ },
+ {
+  "name": "movd-thrice",
+  "mode": "classic",
+  "program": "cases/movd-thrice.mb",
+  "note": "pointer chain ends far in memory",
+  "expect": "halt",
+  "output": "cases/movd-thrice.out"
+ },
+ {
+  "name": "output-high",
+  "mode": "classic",
+  "program": "cases/output-high.mb",
+  "note": "outputs of values > 255 are truncated",
+  "expect": "halt",
+  "output": "cases/output-high.out"
+ },
+ {
+  "name": "whitespace",
+  "mode": "classic",
+  "program": "cases/whitespace.mb",
+  "note": "whitespace is skipped and does not advance the position",
+  "input": "cases/whitespace.in",
+  "expect": "halt",
+  "output": "cases/whitespace.out"
+ },
+ {
+  "name": "jump",
+  "mode": "classic",
+  "program": "cases/jump.mb",
+  "note": "i jumps to [d]+1 and encrypts [d] first",
+  "input": "cases/jump.in",
+  "expect": "halt",
+  "output": "cases/jump.out"
+ },
+ {
+  "name": "nop-run",
+  "mode": "classic",
+  "program": "cases/nop-run.mb",
+  "note": "long run of nops",
+  "input": "cases/nop-run.in",
+  "expect": "halt",
+  "output": "cases/nop-run.out"
+ },
+ {
+  "name": "encrypt-cycle",
+  "mode": "classic",
+  "program": "cases/encrypt-cycle.mb",
+  "note": "3000 nops, then output a = 0",
+  "expect": "halt",
+  "output": "cases/encrypt-cycle.out"
+ },
+ {
+  "name": "wrap-nops",
+  "mode": "classic",
+  "program": "cases/wrap-nops.mb",
+  "note": "c and d wrap to 0; four steps later an encrypted cell holds a value with no encryption",
+  "expect": "undefined",
+  "oracle": "error"
+ },
+ {
+  "name": "load-invalid-char",
+  "mode": "classic",
+  "program": "cases/load-invalid-char.mb",
+  "note": "'A' at position 1 decodes to opcode 66, not an instruction",
+  "expect": "load_error",
+  "oracle": "error"
+ },
+ {
+  "name": "load-too-long",
+  "mode": "classic",
+  "program": "cases/load-too-long.mb",
+  "note": "59050 instructions",
+  "expect": "load_error",
+  "oracle": "error"
+ },
+ {
+  "name": "ub-empty",
+  "mode": "classic",
+  "program": "cases/ub-empty.mb",
+  "note": "initialisation reads mem[-1], mem[-2]",
+  "expect": "undefined",
+  "oracle": "timeout"
+ },
+ {
+  "name": "ub-one-instruction",
+  "mode": "classic",
+  "program": "cases/ub-one-instruction.mb",
+  "note": "initialisation reads mem[-1]",
+  "expect": "undefined",
+  "oracle": "halt"
+ },
+ {
+  "name": "ub-self-modify",
+  "mode": "classic",
+  "program": "cases/ub-self-modify.mb",
+  "note": "c = d = 0: rot overwrites the running cell, whose new value has no encryption",
+  "expect": "undefined",
+  "oracle": "halt"
+ },
+ {
+  "name": "ub-exec-nonprintable",
+  "mode": "classic",
+  "program": "cases/ub-exec-nonprintable.mb",
+  "note": "reference hangs on a non-printable instruction",
+  "expect": "undefined",
+  "oracle": "timeout"
+ },
+ {
+  "name": "f20-eof-value",
+  "mode": "fast20",
+  "program": "cases/f20-eof-value.mb",
+  "note": "EOF reads 3^19-1; output is a mod 256",
+  "expect": "halt",
+  "output": "cases/f20-eof-value.out"
+ },
+ {
+  "name": "f20-echo",
+  "mode": "fast20",
+  "program": "cases/f20-echo.mb",
+  "note": "input then output",
+  "input": "cases/f20-echo.in",
+  "expect": "halt",
+  "output": "cases/f20-echo.out"
+ },
+ {
+  "name": "f20-rot",
+  "mode": "fast20",
+  "program": "cases/f20-rot.mb",
+  "note": "rotation of the low 18 trits",
+  "expect": "halt",
+  "output": "cases/f20-rot.out"
+ },
+ {
+  "name": "f20-rot-twice",
+  "mode": "fast20",
+  "program": "cases/f20-rot-twice.mb",
+  "note": "rotation keeps the top trit",
+  "expect": "halt",
+  "output": "cases/f20-rot-twice.out"
+ },
+ {
+  "name": "f20-crz",
+  "mode": "fast20",
+  "program": "cases/f20-crz.mb",
+  "note": "19-trit crazy op",
+  "expect": "halt",
+  "output": "cases/f20-crz.out"
+ },
+ {
+  "name": "f20-movd-fill",
+  "mode": "fast20",
+  "program": "cases/f20-movd-fill.mb",
+  "note": "explicit crz fill up to the next 4096 cells",
+  "expect": "halt",
+  "output": "cases/f20-movd-fill.out"
+ },
+ {
+  "name": "f20-movd-chain",
+  "mode": "fast20",
+  "program": "cases/f20-movd-chain.mb",
+  "note": "pointer chain into the repeating pattern",
+  "expect": "halt",
+  "output": "cases/f20-movd-chain.out"
+ },
+ {
+  "name": "f20-movd-far",
+  "mode": "fast20",
+  "program": "cases/f20-movd-far.mb",
+  "note": "pointers into upper thirds of memory",
+  "expect": "halt",
+  "output": "cases/f20-movd-far.out"
+ },
+ {
+  "name": "f20-no-whitespace-skip",
+  "mode": "fast20",
+  "program": "cases/f20-no-whitespace-skip.mb",
+  "note": "fast20 loads bytes verbatim, including whitespace",
+  "input": "cases/f20-no-whitespace-skip.in",
+  "expect": "halt",
+  "output": "cases/f20-no-whitespace-skip.out"
+ },
+ {
+  "name": "f20-nop-run",
+  "mode": "fast20",
+  "program": "cases/f20-nop-run.mb",
+  "note": "long run of nops across the fill boundary",
+  "input": "cases/f20-nop-run.in",
+  "expect": "halt",
+  "output": "cases/f20-nop-run.out"
+ }
+]
