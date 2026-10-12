@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-0f6e63.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-stable-0f6e63.svg)](interpreter/)
 
-[Interpreter](interpreter/) · [Conformance suite](conformance/) · [Playground](playground/) · [Roadmap](#roadmap)
+[Interpreter](interpreter/) · [Conformance suite](conformance/) · [Playground](playground/) · [Roadmap](#roadmap) · [Learn more](#learn-more)
 
 </div>
 
@@ -112,6 +112,11 @@ in between. Here is what we plan to build next:
   for arithmetic, number printing and strings, and real tools built on them.
 - **Better tooling.** That means a step debugger with a trit-level memory view
   and editor support.
+
+## Learn more
+
+- [malbolge.org](https://malbolge.org/) covers the language, its history and the people still pushing it forward.
+- The [Esolang wiki](https://esolangs.org/wiki/Main_Page) is the community wiki for esoteric programming languages. See its [Malbolge](https://esolangs.org/wiki/Malbolge) and [Malbolge Unshackled](https://esolangs.org/wiki/Malbolge_Unshackled) pages.
 
 ## Credits
 
