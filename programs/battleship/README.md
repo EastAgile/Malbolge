@@ -6,14 +6,34 @@ opponent, and board rendering run inside [Malbolge](https://en.wikipedia.org/wik
 terminal against a computer that hunts your fleet; every decision it makes is
 computed by a Malbolge program.
 
+<p align="center"><img src="docs/screenshot.svg" alt="A game in progress: your shots on the enemy board above, your fleet and the computer's shots below" width="485"></p>
+
+*A real frame from the game, captured from the program's own output.*
+
+## Quick start
+
+You need a C compiler, Python 3, git, flex and bison 3 (macOS: `xcode-select --install` and `brew install bison`). Then:
+
+```sh
+cd programs/battleship
+make play
 ```
-   Enemy waters            Your fleet
-    A B C D E F G H         A B C D E F G H
-  1 . . X o . . . .       1 ~ ~ ~ # # # # #
-  2 . . X . . . . .       2 ~ ~ ~ ~ ~ ~ ~ ~
-  3 . . X . . . . .       3 ~ ~ ~ # ~ ~ ~ ~
-  ...                      ...
-```
+
+The first `make` builds the interpreter, downloads and builds the LMFAO assembler into `tools/`, compiles the game to HeLL and assembles it (about 30 seconds in all). Later runs go straight to the game.
+
+After `make`, you can also start a game with `python3 launcher.py`, or replay a particular deal with `python3 launcher.py --seed 42`.
+
+## How to play
+
+The launcher places both fleets at random: a 5-, 4-, 3- and 2-cell ship each, never touching. Loading them into the Malbolge program takes about 15 seconds; then the boards appear.
+
+- **Enemy waters** (top) is where you shoot. `.` is unknown water, `X` a hit, `o` a miss.
+- **Your fleet** (bottom) shows your ships as `#`, open water as `~`, and the computer's shots as `X` and `o`.
+- Type a cell as column letter then row number, such as `C5` or `c5`, and press Enter. Firing at a cell you already tried just asks again.
+- The computer answers with its own shot. Press Enter to continue to the next turn.
+- Sink all 14 enemy ship cells before the computer sinks yours. `Q` (or Ctrl-D) quits.
+
+The game needs about 4 GB of RAM while it runs, because the assembled program is about 180 MB of Malbolge.
 
 ## Why this is hard
 
@@ -38,9 +58,8 @@ Everything that *is* the game runs in Malbolge Unshackled:
 - **Input** is decoded width-independently: each keypress is turned into an
   8-bit code by a 243-way jump table, so it works whatever rotation width the
   interpreter happens to choose.
-- **The computer opponent** plays *hunt and target*: it searches until it hits a
-  ship, then works along that ship's neighbours until it sinks, then resumes
-  searching. This logic is compiled to Malbolge, not done on the host.
+- **The computer opponent** plays *hunt and target*: it sweeps the board until
+  it hits a ship, then tries the cells around that hit before sweeping on. This logic is compiled to Malbolge, not done on the host.
 - **Rendering** is ANSI colour text, drawn by Malbolge `OUT` instructions.
 
 The only thing the host does is the one thing Malbolge cannot: a thin Python
@@ -54,21 +73,9 @@ Matthias Lutter's Malbolge assembly, which
 [LMFAO](https://github.com/esoteric-programmer/LMFAO) assembles into a Malbolge
 Unshackled program.
 
-## Build and play
+## Building by hand
 
-```sh
-make play
-```
-
-This builds the interpreter (`tools/mu`), compiles and assembles the game
-(`game/battleship.mu`), and starts a match. Fire by typing a column letter and
-row number, e.g. `C5`; press `Q` to quit.
-
-Assembling needs **LMFAO** on your path (or `make LMFAO=/path/to/lmfao`). The
-assembled program is large (~180&nbsp;MB) because every value is spelled out in
-Malbolge's self-modifying encoding; it is a build artifact and is not checked
-in. On the reference `mu` interpreter the fleet load takes a few seconds and
-each move is near-instant; on an optimising interpreter it is immediate.
+`make` uses an `lmfao` from your PATH if you have one, or `make LMFAO=/path/to/lmfao`. The assembled program (`game/battleship.mu`, about 180&nbsp;MB) is a build artifact and is not checked in; neither is the downloaded LMFAO.
 
 ## Layout
 
@@ -79,6 +86,7 @@ compiler/   the little-language -> HeLL compiler
   lang.py     bits, if/while, counters, indexed board access
   battleship.py  the game itself
 launcher.py  places random fleets, streams them in, bridges your keyboard
+docs/        the screenshot above
 tools/mu.c   a Malbolge Unshackled interpreter (for standalone play)
 Makefile
 ```
