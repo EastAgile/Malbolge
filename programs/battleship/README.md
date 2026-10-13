@@ -6,9 +6,9 @@ opponent, and board rendering run inside [Malbolge](https://en.wikipedia.org/wik
 terminal against a computer that hunts your fleet; every decision it makes is
 computed by a Malbolge program.
 
-<p align="center"><img src="docs/screenshot.svg" alt="A game in progress: your shots on the enemy board above, your fleet and the computer's shots below" width="485"></p>
+<p align="center"><img src="docs/screenshot.png" alt="Battleship running in a macOS terminal: your shots on the enemy board above, your fleet and the computer's misses below" width="560"></p>
 
-*A real frame from the game, captured from the program's own output.*
+*The game running in a macOS terminal.*
 
 ## Quick start
 
