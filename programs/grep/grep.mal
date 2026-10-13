@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+#
+# grep.mal - a modern CLI front end for a grep that runs entirely in Malbolge.
+#
+# The matching logic lives in grep.mu, a Malbolge Unshackled program. Malbolge
+# has no command-line arguments and no file access: its only channels are
+# stdin and stdout. This launcher bridges that gap. It parses a familiar,
+# grep-style command line, then feeds the Malbolge program a two-line header
+# (flags, then the pattern) followed by the input stream. Every character is
+# matched inside Malbolge; this script only shuffles bytes in and out.
+#
+# Usage:
+#   grep.mal [OPTIONS] PATTERN [FILE ...]
+#
+# Options:
+#   -i, --ignore-case    case-insensitive matching
+#   -v, --invert-match   select non-matching lines
+#   -n, --line-number    prefix each output line with its line number
+#   -c, --count          print only a count of matching lines
+#   -e PATTERN           give the pattern as an option (useful if it starts '-')
+#       --interp PATH    Malbolge interpreter to use (default: auto-detect)
+#   -h, --help           show this help
+#
+# With no FILE, or with -, read standard input. Multiple files are searched as
+# one concatenated stream (filename prefixes are not emitted).
+#
+# Pattern syntax (a documented subset of POSIX basic regular expressions):
+#   c        literal character          .        any character
+#   X*       zero or more of atom X     ^  $     start / end of line anchors
+#   [abc]    character class            [a-z]    range      [^...]  negated
+#   \c       match c literally
+#
+set -euo pipefail
+
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+prog="$here/build/grep.mu"
+
+usage() { sed -n '3,40p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+
+flags=""
+pattern=""
+have_pattern=0
+interp="${MALBOLGE:-}"
+files=()
+
+add_flag() { case "$flags" in *"$1"*) ;; *) flags="$flags$1";; esac; }
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -i|--ignore-case)  add_flag i ;;
+    -v|--invert-match) add_flag v ;;
+    -n|--line-number)  add_flag n ;;
+    -c|--count)        add_flag c ;;
+    -e) shift; [ $# -gt 0 ] || { echo "grep.mal: -e needs an argument" >&2; exit 2; }; pattern="$1"; have_pattern=1 ;;
+    --interp) shift; [ $# -gt 0 ] || { echo "grep.mal: --interp needs a path" >&2; exit 2; }; interp="$1" ;;
+    -h|--help) usage; exit 0 ;;
+    --) shift; break ;;
+    -) files+=("/dev/stdin") ;;
+    -*)
+      # allow bundled short flags like -ivn
+      if [ "${#1}" -gt 1 ] && [ "${1#--}" = "$1" ]; then
+        ok=1; rest="${1#-}"
+        for (( k=0; k<${#rest}; k++ )); do
+          case "${rest:$k:1}" in i|v|n|c) ;; *) ok=0;; esac
+        done
+        if [ "$ok" = 1 ]; then
+          for (( k=0; k<${#rest}; k++ )); do add_flag "${rest:$k:1}"; done
+        else echo "grep.mal: unknown option: $1" >&2; exit 2; fi
+      else echo "grep.mal: unknown option: $1" >&2; exit 2; fi
+      ;;
+    *)
+      if [ "$have_pattern" = 0 ]; then pattern="$1"; have_pattern=1; else files+=("$1"); fi
+      ;;
+  esac
+  shift
+done
+
+# remaining args after -- are files (or the pattern if none yet)
+while [ $# -gt 0 ]; do
+  if [ "$have_pattern" = 0 ]; then pattern="$1"; have_pattern=1; else files+=("$1"); fi
+  shift
+done
+
+if [ "$have_pattern" = 0 ]; then echo "grep.mal: no pattern given" >&2; usage >&2; exit 2; fi
+if [ ! -f "$prog" ]; then echo "grep.mal: $prog not found - run 'make' first" >&2; exit 1; fi
+
+# Locate an interpreter: explicit --interp / $MALBOLGE, else a bundled build,
+# else anything named mu / malbolge-unshackled on PATH.
+if [ -z "$interp" ]; then
+  for cand in "$here/build/mu" "$here/tools/mu"; do
+    [ -x "$cand" ] && interp="$cand" && break
+  done
+fi
+if [ -z "$interp" ]; then
+  for cand in mu malbolge-unshackled; do
+    if command -v "$cand" >/dev/null 2>&1; then interp="$(command -v "$cand")"; break; fi
+  done
+fi
+if [ -z "$interp" ]; then
+  echo "grep.mal: no Malbolge interpreter found. Build the bundled one with 'make mu'," >&2
+  echo "          set \$MALBOLGE, or pass --interp PATH." >&2
+  exit 1
+fi
+
+# Assemble the input stream: header (flags, pattern) then the data.
+emit_input() {
+  printf '%s\n' "$flags"
+  printf '%s\n' "$pattern"
+  if [ "${#files[@]}" -eq 0 ]; then cat
+  else cat "${files[@]}"
+  fi
+}
+
+emit_input | "$interp" "$prog"

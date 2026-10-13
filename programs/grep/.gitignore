@@ -1,0 +1,6 @@
+# build artifacts
+build/mu
+build/grep.mu
+build/grep.eir
+build/grep.hell
+build/grep-ref
