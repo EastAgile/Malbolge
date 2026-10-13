@@ -99,10 +99,9 @@ def main():
 
     os.write(master, prelude)
 
-    old = None
-    if sys.stdin.isatty():
-        old = termios.tcgetattr(sys.stdin)
-        tty.setraw(sys.stdin)
+    # Leave your own terminal in its normal (cooked) mode: you see what you
+    # type, Enter sends '\n', and the game's '\n' still starts a fresh line.
+    # The game reads whole lines, so raw mode would gain nothing.
     watch_stdin = True
     try:
         while True:
@@ -124,9 +123,9 @@ def main():
                     watch_stdin = False
                     continue
                 os.write(master, data)
+    except KeyboardInterrupt:
+        pass
     finally:
-        if old is not None:
-            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old)
         try:
             os.waitpid(pid, 0)
         except OSError:
