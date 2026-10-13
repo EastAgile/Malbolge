@@ -35,7 +35,8 @@ game/battleship.hell: $(SRC)
 	@mkdir -p game
 	$(PY) compiler/battleship.py $@
 
-game/battleship.mu: game/battleship.hell | $(LMFAO)
+game/battleship.mu: game/battleship.hell
+	@test "$(LMFAO)" != tools/lmfao || $(MAKE) tools/lmfao
 	$(LMFAO) -o $@ $<
 
 # Build LMFAO from source without its own Makefile, which hardcodes gcc,
