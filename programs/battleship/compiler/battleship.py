@@ -5,7 +5,8 @@ Everything -- the random fleets, all game state, the computer opponent's
 hunt/target logic and the ANSI board rendering -- is generated as HeLL and
 assembled by LMFAO.  Nothing runs on the host but the interpreter.  The fleets
 come from a xorshift generator whose state bits are self-encrypting code cells,
-seeded by the player's keystrokes (a Malbolge program has no other entropy).
+seeded by what the player types before the fleets are placed (a Malbolge
+program has no other entropy); later keystrokes never reach it.
 
 Board: 8x8.  Cell k = row*8 + col (row,col in 0..7); the shared index register
 holds col in bits 0..2 and row in bits 3..5, so no multiplication is needed.
@@ -92,8 +93,10 @@ def build():
     rng = b.rng_init()
     b.out(CLEAR + BOLD + CYAN + "BATTLESHIP" + R + "  (in Malbolge Unshackled)\n\n")
     b.out("Malbolge has no clock and no random source, so the sea is stirred by\n")
-    b.out("what you type.  Every key you press, now and during play, is folded\n")
-    b.out("into a generator built from self-encrypting Malbolge code cells.\n\n")
+    b.out("what you type now.  Each key is folded into a generator built from\n")
+    b.out("self-encrypting Malbolge code cells.  Once the fleets are placed the\n")
+    b.out("generator stops listening, so nothing you type later can move a ship\n")
+    b.out("or steer the computer's shots.\n\n")
     b.out(BOLD + "Name your admiral" + R + " (any text, then Enter): ")
     # read to end of line; getc mixes each character into the generator
     nm = b.label("name")
@@ -185,6 +188,9 @@ def build():
     for k in range(NCELLS):
         with b.if_bit(sship[k], 1):
             b.toggle(pship[k])
+    # Both fleets are now fixed.  Stop listening to the keyboard: from here on
+    # the generator only feeds the computer's hunt, and play cannot steer it.
+    b.rng_seal()
 
     # ---- rendering -------------------------------------------------------
     def render():

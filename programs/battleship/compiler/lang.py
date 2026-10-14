@@ -145,12 +145,15 @@ class Builder:
     #
     # A Malbolge program is deterministic, so the generator has to be seeded
     # from the one thing that differs between runs: what the player types.
-    # Every character read by getc is folded into the state.
+    # While the `seeding` flag is set, every character read by getc is folded
+    # into the state; rng_seal() clears it for good.
     RNG_BITS = 32
     RNG_INIT = 0x2545F491
 
     def rng_init(self):
         self.rng = [self.bit("rng%d" % i) for i in range(self.RNG_BITS)]
+        self.seeding = self.bit("rng_seeding")
+        self.toggle(self.seeding)
         for i, f in enumerate(self.rng):     # flags start at 0
             if (self.RNG_INIT >> i) & 1:
                 self.toggle(f)
@@ -168,6 +171,10 @@ class Builder:
             for i in range(0, n - s):                # read higher bits first
                 with self.if_bit(x[i + s], 1):
                     self.toggle(x[i])
+
+    def rng_seal(self):
+        """Stop folding input into the generator from here on."""
+        self.set_bit(self.seeding, 0)
 
     def rng_step(self):
         self._xor_shift(13)
@@ -230,8 +237,9 @@ class Builder:
             _, ga = self._getc
             self.cur = ga
             if self.rng:
-                # every keystroke stirs the generator
-                self.rng_mix(self.in_flags)
+                # keystrokes stir the generator until it is sealed
+                with self.if_bit(self.seeding, 1):
+                    self.rng_mix(self.in_flags)
             ga = self.cur
             # wire the shared exit to dispatch the return id back to each caller
             targets = self._ret_targets

@@ -64,10 +64,19 @@ every non-zero 32-bit state before it repeats.
 Encryption can scramble a value, but it cannot make one unpredictable. The
 interpreter is deterministic, so a program that reads nothing makes the same
 "random" choices on every run. The only thing that differs between runs is what the player
-types, so that is the seed. The game asks you to name your admiral, and each
-key you press, then and on every later turn, is folded into the generator's
-state. The same name with the same moves replays the same game. Change one
-letter and you get different seas.
+types, so that is the seed. The game asks you to name your admiral and folds
+each key of the name into the generator's state. Then it places both fleets,
+and the generator stops reading the keyboard. Nothing typed during play can
+move a ship or influence where the computer fires. The same name gives the
+same seas and the same computer shots. Change one letter and you get a
+different game.
+
+Why not use the time the player takes to type? A Malbolge program cannot see
+time. Its only contact with the outside world is reading and writing
+characters, and a read simply waits: no instruction runs until the key
+arrives, so the machine is in exactly the same state whether you answer in one
+second or one minute. Timing could only get in if the interpreter put it
+there.
 
 The game is written in a tiny structured language (bits, `if`/`while`, counters,
 indexed board access) that a small compiler in `compiler/` lowers to **HeLL**,
