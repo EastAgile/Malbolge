@@ -30,8 +30,9 @@ game/battleship.hell: $(SRC)
 game/battleship.mu: game/battleship.hell
 	$(LMFAO) -o $@ $<
 
+# Nothing but the interpreter runs at play time.
 play: all
-	$(PY) launcher.py
+	$(MU) game/battleship.mu
 
 clean:
 	rm -f tools/mu game/battleship.mu game/battleship.hell

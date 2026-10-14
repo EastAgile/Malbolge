@@ -142,6 +142,7 @@ static V *cell(V a) {
 
 /* ---- I/O ---- */
 static V input(void) {
+  fflush(stdout); /* show any prompt before blocking on the keyboard */
   int ch = getchar();
   if (ch == EOF) return (V){0, 2};
   if (ch == '\n') return (V){-1, 2};

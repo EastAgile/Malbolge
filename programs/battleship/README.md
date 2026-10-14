@@ -1,7 +1,7 @@
 # Battleship, in Malbolge
 
-A complete, playable game of Battleship whose entire rule set, computer
-opponent, and board rendering run inside [Malbolge](https://en.wikipedia.org/wiki/Malbolge)
+A complete, playable game of Battleship whose entire rule set, random fleet
+placement, computer opponent, and board rendering run inside [Malbolge](https://en.wikipedia.org/wiki/Malbolge)
 &mdash; a language designed to be almost impossible to program. You play in your
 terminal against a computer that hunts your fleet; every decision it makes is
 computed by a Malbolge program.
@@ -21,12 +21,13 @@ Malbolge has no variables, no functions, and no arithmetic you can just write
 down: every instruction encrypts itself after it runs, the three-valued "crazy"
 operator is its only logic gate, and in the Turing-complete *Unshackled*
 variant the machine's word size is unknown and grows as the program runs. There
-is also **no random number generator, no command-line arguments, and no file
-access**. Most published Malbolge programs are a few lines long; a few large
+is also no random number generator, no clock, no command-line arguments, and no
+file access. Most published Malbolge programs are a few lines long; a few large
 ones (a Lisp, a lambda-calculus evaluator) exist but are tens of megabytes and
 run for minutes.
 
-This project builds a real, interactive game on that substrate.
+This project builds a real, interactive game on that substrate. At play time
+nothing runs but the Malbolge interpreter.
 
 ## How it works
 
@@ -38,15 +39,35 @@ Everything that *is* the game runs in Malbolge Unshackled:
 - **Input** is decoded width-independently: each keypress is turned into an
   8-bit code by a 243-way jump table, so it works whatever rotation width the
   interpreter happens to choose.
-- **The computer opponent** plays *hunt and target*: it searches until it hits a
-  ship, then works along that ship's neighbours until it sinks, then resumes
-  searching. This logic is compiled to Malbolge, not done on the host.
+- **Randomness** comes from Malbolge's own self-encryption (see below).
+- **Fleet placement** for both sides happens in the program: it draws a start
+  cell and an orientation, rejects any ship that would leave the board or touch
+  another, and starts the board over if a ship fails 256 draws in a row.
+- **The computer opponent** plays *hunt and target*: it fires at random unshot
+  cells until it hits a ship, then tries that hit's neighbours, then resumes
+  hunting. This logic is compiled to Malbolge, not done on the host.
 - **Rendering** is ANSI colour text, drawn by Malbolge `OUT` instructions.
 
-The only thing the host does is the one thing Malbolge cannot: a thin Python
-**launcher** places two random fleets (Malbolge has no RNG) and streams them to
-the program's standard input before play begins. After that, the launcher just
-forwards your keystrokes.
+## Where the randomness comes from
+
+Every time a Malbolge instruction runs, the interpreter overwrites it with its
+image under a fixed permutation, `xlat2`. The game's random number generator is
+built from that self-encryption and nothing else.
+
+The generator is 32 code cells. Each one sits on a two-point cycle of `xlat2`,
+so which point it is at is one bit, and making it encrypt itself once flips that
+bit. To advance the generator, the program makes cells encrypt themselves, each
+one only if a test of some other cell says so. The pattern of those
+encryptions is Marsaglia's xorshift32 (shifts 13, 17, 5), which passes through
+every non-zero 32-bit state before it repeats.
+
+Encryption can scramble a value, but it cannot make one unpredictable. The
+interpreter is deterministic, so a program that reads nothing makes the same
+"random" choices on every run. The only thing that differs between runs is what the player
+types, so that is the seed. The game asks you to name your admiral, and each
+key you press, then and on every later turn, is folded into the generator's
+state. The same name with the same moves replays the same game. Change one
+letter and you get different seas.
 
 The game is written in a tiny structured language (bits, `if`/`while`, counters,
 indexed board access) that a small compiler in `compiler/` lowers to **HeLL**,
@@ -61,14 +82,15 @@ make play
 ```
 
 This builds the interpreter (`tools/mu`), compiles and assembles the game
-(`game/battleship.mu`), and starts a match. Fire by typing a column letter and
-row number, e.g. `C5`; press `Q` to quit.
+(`game/battleship.mu`), and runs `tools/mu game/battleship.mu`. Type a name
+to seed the sea, then fire by typing a column letter and row number, e.g.
+`C5`; type `Q` to quit.
 
 Assembling needs **LMFAO** on your path (or `make LMFAO=/path/to/lmfao`). The
-assembled program is large (~180&nbsp;MB) because every value is spelled out in
+assembled program is large (~190&nbsp;MB) because every value is spelled out in
 Malbolge's self-modifying encoding; it is a build artifact and is not checked
-in. On the reference `mu` interpreter the fleet load takes a few seconds and
-each move is near-instant; on an optimising interpreter it is immediate.
+in. Loading it into the reference `mu` interpreter takes about 40 seconds and
+4 GB of memory. After that, fleet placement and each move are near-instant.
 
 ## Layout
 
@@ -76,9 +98,8 @@ each move is near-instant; on an optimising interpreter it is immediate.
 compiler/   the little-language -> HeLL compiler
   backend.py  control-flow graph and flag machine -> HeLL
   getc.py     width-independent character input
-  lang.py     bits, if/while, counters, indexed board access
+  lang.py     bits, if/while, counters, indexed board access, the generator
   battleship.py  the game itself
-launcher.py  places random fleets, streams them in, bridges your keyboard
 tools/mu.c   a Malbolge Unshackled interpreter (for standalone play)
 Makefile
 ```
