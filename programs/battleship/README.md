@@ -104,10 +104,95 @@ to seed the sea, then fire by typing a column letter and row number, e.g.
 `C5`; type `Q` to quit.
 
 Assembling needs **LMFAO** on your path (or `make LMFAO=/path/to/lmfao`). The
-assembled program is large (~190&nbsp;MB) because every value is spelled out in
+assembled program is large (196&nbsp;MB) because every value is spelled out in
 Malbolge's self-modifying encoding; it is a build artifact and is not checked
-in. Loading it into the reference `mu` interpreter takes about 40 seconds and
-4 GB of memory. After that, fleet placement and each move are near-instant.
+in. Starting it on the reference `mu` interpreter takes 16 seconds in our
+benchmark (up to 40 on a cold start) and 4.3 GB of memory. After that, fleet
+placement and each move are near-instant.
+
+## The same game in Python and Rust
+
+To show what Malbolge costs, `compare/` holds the same program written the
+ordinary way, once in Python and once in Rust. They are not loose
+re-creations. Both use the same generator, seeded the same way, and the same
+rules and computer opponent. Fed the same keystrokes, they print the Malbolge
+program's output byte for byte, down to the ANSI colour codes and the intro
+text that talks about Malbolge. They even copy its input quirks: characters
+are compared through the same 8-bit code the Malbolge input decoder produces,
+so two characters 243 code points apart are indistinguishable in all three.
+
+<p align="center">
+  <img src="compare/chart.svg" alt="Bar charts, log scale: source lines, program size, run time and peak memory for the Python, Rust and Malbolge versions. The table below has the same numbers." width="760">
+</p>
+
+| | Python | Rust | Malbolge |
+|---|---:|---:|---:|
+| Source written by hand (non-blank lines) | 264 | 372 | 1,125 (430 game + 695 compiler) |
+| Program you run | 10.1 KB script | 469 KB binary | 196 MB `.mu` file |
+| Full 64-shot game, wall clock | 51 ms | 4 ms | 16.4 s |
+| Quit at the first shot, wall clock | 23 ms | 2 ms | 16.1 s |
+| Peak memory | 10.4 MB | 2.3 MB | 4.3 GB |
+
+How to read it:
+
+- **Every bar is on a log scale.** The Malbolge program is 19,000 times the
+  size of the Python script, and a game takes 4,700 times as long as in Rust;
+  on a linear axis the other two bars would be invisible.
+- **Malbolge's line count includes its compiler.** The game itself is 430
+  lines of a small structured language (`compiler/battleship.py`). The other
+  695 lines are the compiler that turns it into 116,625 lines of HeLL
+  assembly, which LMFAO assembles into the 196 MB program. Nobody writes that
+  program by hand; nobody could.
+- **Almost all of Malbolge's time is spent before you fire.** Quitting at the
+  first shot takes 496 million Malbolge steps; a complete game takes 497
+  million. The 64 turns themselves cost about 1.5 million steps. The rest is
+  loading the 196 MB file and running the program up to the first prompt.
+- **Python's time is mostly Python starting up.** A game takes 51 ms, and
+  quitting at once takes 23 ms.
+
+Measured on a 4-core Intel Xeon at 2.8 GHz under Linux, with Python 3.13 and
+Rust 1.97. Times are medians of 5 runs (3 for Malbolge), peak memory is the
+maximum. The benchmark first checks that all three outputs are identical, so
+the numbers always compare the same work. To reproduce, after `make`:
+
+```sh
+make bench        # rewrites compare/results.json and compare/chart.svg
+```
+
+To play the other two versions:
+
+```sh
+python3 compare/python/battleship.py
+cargo run --release --manifest-path compare/rust/Cargo.toml
+```
+
+## Tests
+
+```sh
+make test         # about 10 s
+make test-all     # also re-runs the Malbolge program itself: ~2 min, ~4 GB per run
+```
+
+`tests/sessions/` is the contract. Each `NAME.in` is a keyboard session and
+`NAME.out` is what the Malbolge program printed for it, byte for byte. The
+six sessions cover a win, a loss, quitting, end of input in the middle of a
+name, a Unicode name, and malformed shots. The tests check that:
+
+- the Python and Rust versions reproduce every recorded session exactly, and
+  agree with each other on 300 more random sessions;
+- with `make test-all`, the Malbolge program still produces every recording;
+- every fleet is legal: one ship each of 5, 4, 3 and 2 cells, straight, and
+  not touching;
+- the same name and first shot give the same game, the name alone fixes your
+  fleet, and `C5` and `c5` give different enemy fleets;
+- nothing typed after the first shot changes the game;
+- the first shot hits about as often as a shot at an independent fleet
+  (14 cells in 64), so seeding the fleet with it neither helps nor hurts;
+- the compiler's input codes match the Python version's, its output is
+  deterministic, and every constant it loads leaves the program unchanged.
+
+The Rust version also has its own unit tests (`cargo test`). CI runs those and
+the fast tests on every pull request and every push to `main`.
 
 ## Layout
 
@@ -117,6 +202,12 @@ compiler/   the little-language -> HeLL compiler
   getc.py     width-independent character input
   lang.py     bits, if/while, counters, indexed board access, the generator
   battleship.py  the game itself
+compare/     the same game in Python and Rust, and the benchmark
+  python/battleship.py
+  rust/src/main.rs
+  bench.py     measures all three and draws chart.svg
+  measure.c    times a run and records its peak memory
+tests/       pytest suite and the recorded Malbolge sessions
 tools/mu.c   a Malbolge Unshackled interpreter (for standalone play)
 Makefile
 ```

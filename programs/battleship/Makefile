@@ -2,6 +2,10 @@
 #
 #   make            build the interpreter and the game
 #   make play       build, then start a game against the computer
+#   make test       fast tests: Python and Rust versions against the recorded
+#                   Malbolge sessions, fleet rules, compiler checks (~10 s)
+#   make test-all   also re-run the Malbolge program itself (~2 min, ~4 GB per run)
+#   make bench      measure all three versions; rewrites compare/chart.svg
 #   make clean      remove build artifacts
 #
 # Assembling the game needs LMFAO (the Malbolge Unshackled assembler).  Point
@@ -34,7 +38,19 @@ game/battleship.mu: game/battleship.hell
 play: all
 	$(MU) game/battleship.mu
 
+PYTEST ?= pytest
+
+test:
+	$(PYTEST) -q
+
+test-all: all
+	BATTLESHIP_MALBOLGE=1 $(PYTEST) -q
+
+bench: all
+	$(PY) compare/bench.py
+
 clean:
 	rm -f tools/mu game/battleship.mu game/battleship.hell
+	rm -rf compare/rust/target compare/measure
 
-.PHONY: all play clean
+.PHONY: all play test test-all bench clean

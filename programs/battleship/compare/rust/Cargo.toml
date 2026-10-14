@@ -1,0 +1,11 @@
+[package]
+name = "battleship"
+version = "0.1.0"
+edition = "2021"
+description = "Battleship in Rust, behaving exactly like the Malbolge version"
+license = "MIT"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3
