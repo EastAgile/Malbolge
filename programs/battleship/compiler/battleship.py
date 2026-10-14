@@ -5,8 +5,9 @@ Everything -- the random fleets, all game state, the computer opponent's
 hunt/target logic and the ANSI board rendering -- is generated as HeLL and
 assembled by LMFAO.  Nothing runs on the host but the interpreter.  The fleets
 come from a xorshift generator whose state bits are self-encrypting code cells,
-seeded by what the player types before the fleets are placed (a Malbolge
-program has no other entropy); later keystrokes never reach it.
+seeded by what the player types (a Malbolge program has no other entropy):
+the admiral's name places the player's fleet, the name plus the first shot
+places the enemy's, and after that no keystroke reaches the generator.
 
 Board: 8x8.  Cell k = row*8 + col (row,col in 0..7); the shared index register
 holds col in bits 0..2 and row in bits 3..5, so no multiplication is needed.
@@ -93,10 +94,11 @@ def build():
     rng = b.rng_init()
     b.out(CLEAR + BOLD + CYAN + "BATTLESHIP" + R + "  (in Malbolge Unshackled)\n\n")
     b.out("Malbolge has no clock and no random source, so the sea is stirred by\n")
-    b.out("what you type now.  Each key is folded into a generator built from\n")
-    b.out("self-encrypting Malbolge code cells.  Once the fleets are placed the\n")
-    b.out("generator stops listening, so nothing you type later can move a ship\n")
-    b.out("or steer the computer's shots.\n\n")
+    b.out("what you type.  Each key is folded into a generator built from\n")
+    b.out("self-encrypting Malbolge code cells.  Your name places your fleet.\n")
+    b.out("The enemy fleet does not exist until you fire your first shot: your\n")
+    b.out("name and that shot place it, then the shot is scored against it.\n")
+    b.out("After that the generator stops listening to the keyboard.\n\n")
     b.out(BOLD + "Name your admiral" + R + " (any text, then Enter): ")
     # read to end of line; getc mixes each character into the generator
     nm = b.label("name")
@@ -120,14 +122,20 @@ def build():
     b.cur = sd
 
     # ---- fleet placement -------------------------------------------------
-    # Both fleets are placed here, by the program, one ship at a time: draw a
-    # start cell and an orientation from the generator, reject the draw if
-    # the ship would leave the board or touch a ship already placed, else
-    # commit it.  `blocked` marks every placed cell and its 8 neighbours.  If
-    # a ship fails 256 draws in a row the board is cleared and started over,
-    # so no arrangement can wedge the loop.  The first board built becomes
-    # the enemy's, the second yours.
-    b.out("\nPlacing fleets...\n")
+    # One routine places a fleet, one ship at a time: draw a start cell and an
+    # orientation from the generator, reject the draw if the ship would leave
+    # the board or touch a ship already placed, else commit it.  `blocked`
+    # marks every placed cell and its 8 neighbours.  If a ship fails 256 draws
+    # in a row the board is cleared and started over, so no arrangement can
+    # wedge the loop.
+    #
+    # It runs twice.  First, straight after the name, for the player's fleet.
+    # Second, after the player's first shot has been read (every key of it
+    # folded into the generator), for the enemy's fleet; the routine then
+    # seals the generator and jumps to `fire_b`, which scores that shot.
+    b.out("\nPlacing your fleet...\n")
+    setup_done = P.block("setup_done")
+    fire_b = P.block("fire")
     sship = [b.bit("sship%d" % k) for k in range(NCELLS)]
     blocked = [b.bit("blk%d" % k) for k in range(NCELLS)]
     tries = [b.bit("try%d" % i) for i in range(8)]
@@ -182,15 +190,18 @@ def build():
     with b.if_bit(second, 0):
         for k in range(NCELLS):
             with b.if_bit(sship[k], 1):
-                b.toggle(eship[k])
+                b.toggle(pship[k])
         b.toggle(second)
-        b.cur.term = ("goto", restart)
+        b.cur.term = ("goto", setup_done)
     for k in range(NCELLS):
         with b.if_bit(sship[k], 1):
-            b.toggle(pship[k])
+            b.toggle(eship[k])
     # Both fleets are now fixed.  Stop listening to the keyboard: from here on
     # the generator only feeds the computer's hunt, and play cannot steer it.
     b.rng_seal()
+    b.out(GREY + "  (the enemy fleet is now at sea)\n" + R)
+    b.cur.term = ("goto", fire_b)
+    b.cur = setup_done
 
     # ---- rendering -------------------------------------------------------
     def render():
@@ -325,6 +336,11 @@ def build():
     b.cur = dre; b.cur.term = ("goto", quit_b)
     b.cur = drk; b.clear_in(); b.cur.term = ("goto", dr)
     b.cur = drn; b.clear_in()
+
+    # first shot: the enemy fleet does not exist yet, so place it now (from
+    # the name and every key of this shot), then score the shot against it
+    b.cur.term = ("test", b.seeding, restart, fire_b)
+    b.cur = fire_b
 
     # resolve player's shot on the enemy board
     resolve(eship, eshot)

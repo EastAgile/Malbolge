@@ -42,7 +42,9 @@ Everything that *is* the game runs in Malbolge Unshackled:
 - **Randomness** comes from Malbolge's own self-encryption (see below).
 - **Fleet placement** for both sides happens in the program: it draws a start
   cell and an orientation, rejects any ship that would leave the board or touch
-  another, and starts the board over if a ship fails 256 draws in a row.
+  another, and starts the board over if a ship fails 256 draws in a row. Your
+  fleet is placed when you give your name. The enemy fleet is placed only after
+  your first shot (see below).
 - **The computer opponent** plays *hunt and target*: it fires at random unshot
   cells until it hits a ship, then tries that hit's neighbours, then resumes
   hunting. This logic is compiled to Malbolge, not done on the host.
@@ -64,12 +66,18 @@ every non-zero 32-bit state before it repeats.
 Encryption can scramble a value, but it cannot make one unpredictable. The
 interpreter is deterministic, so a program that reads nothing makes the same
 "random" choices on every run. The only thing that differs between runs is what the player
-types, so that is the seed. The game asks you to name your admiral and folds
-each key of the name into the generator's state. Then it places both fleets,
-and the generator stops reading the keyboard. Nothing typed during play can
-move a ship or influence where the computer fires. The same name gives the
-same seas and the same computer shots. Change one letter and you get a
-different game.
+types, so that is the seed, and the game takes it in two parts:
+
+1. **Your admiral's name.** Each key is folded into the generator, which then
+   places your fleet so you can see it before you fire.
+2. **Your first shot.** The enemy fleet does not exist yet when you fire it.
+   Each key of the shot is folded into the generator, which then places the
+   enemy fleet and scores your shot against it.
+
+After that the generator stops reading the keyboard. Nothing typed during play
+can move a ship or influence where the computer fires. The enemy fleet is the
+same only for the same name and the same first shot, typed the same way: `C5`
+and `c5` are different keys, so they give different fleets.
 
 Why not use the time the player takes to type? A Malbolge program cannot see
 time. Its only contact with the outside world is reading and writing
