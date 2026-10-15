@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="756" viewBox="0 0 760 756" role="img" aria-labelledby="t d">
+<title id="t">Battleship in Python, Rust and Malbolge</title>
+<desc id="d">Log-scale bars comparing source lines, program size, run time and peak memory. The table in the README has the same numbers.</desc>
+<style>:root{--bg:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--grid:#e4e3df;--edge:#d6d5d0}.s-Python{fill:#2a78d6}.s-Rust{fill:#eb6834}.s-Malbolge{fill:#1baf7a}@media (prefers-color-scheme: dark){:root{--bg:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--grid:#353532;--edge:#44443f}.s-Python{fill:#3987e5}.s-Rust{fill:#d95926}.s-Malbolge{fill:#199e70}}text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:var(--ink)}.t2{fill:var(--ink2)}.h{font-size:15px;font-weight:600}.sub{font-size:12px}.lab{font-size:13px}.val{font-size:12px;font-variant-numeric:tabular-nums}.tick{font-size:10px}</style>
+<rect x="0.5" y="0.5" width="759" height="755" rx="10" fill="var(--bg)" stroke="var(--edge)"/>
+<text x="24" y="32" class="h" style="font-size:17px">Battleship: same game, three languages</text>
+<text x="24" y="52" class="sub t2">Every bar is on a log scale: each grid line is ten times the one before. Shorter is better.</text>
+<text x="24" y="92" class="h">Source written by hand</text>
+<text x="24" y="108" class="sub t2">non-blank lines</text>
+<line x1="116.0" x2="116.0" y1="116" y2="210" stroke="var(--grid)" stroke-width="1"/>
+<text x="116.0" y="224" class="tick t2" text-anchor="middle">10</text>
+<line x1="259.3" x2="259.3" y1="116" y2="210" stroke="var(--grid)" stroke-width="1"/>
+<text x="259.3" y="224" class="tick t2" text-anchor="middle">100</text>
+<line x1="402.7" x2="402.7" y1="116" y2="210" stroke="var(--grid)" stroke-width="1"/>
+<text x="402.7" y="224" class="tick t2" text-anchor="middle">1,000</text>
+<line x1="546.0" x2="546.0" y1="116" y2="210" stroke="var(--grid)" stroke-width="1"/>
+<text x="546.0" y="224" class="tick t2" text-anchor="middle">10,000</text>
+<text x="24" y="135" class="lab">Python</text>
+<path class="s-Python" d="M116.0 118 h199.8 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-199.8 z"><title>Python: 264 lines</title></path>
+<text x="325.8" y="135" class="val">264 lines<tspan class="t2"></tspan></text>
+<text x="24" y="167" class="lab">Rust</text>
+<path class="s-Rust" d="M116.0 150 h221.1 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-221.1 z"><title>Rust: 372 lines</title></path>
+<text x="347.1" y="167" class="val">372 lines<tspan class="t2">  ·  1.4× Python</tspan></text>
+<text x="24" y="199" class="lab">Malbolge</text>
+<path class="s-Malbolge" d="M116.0 182 h290.0 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-290.0 z"><title>Malbolge: 1,125 lines</title></path>
+<text x="416.0" y="199" class="val">1,125 lines<tspan class="t2">  ·  game + compiler  ·  4.3× Python</tspan></text>
+<text x="24" y="260" class="h">Program you run</text>
+<text x="24" y="276" class="sub t2">file size</text>
+<line x1="116.0" x2="116.0" y1="284" y2="378" stroke="var(--grid)" stroke-width="1"/>
+<text x="116.0" y="392" class="tick t2" text-anchor="middle">1 KB</text>
+<line x1="187.7" x2="187.7" y1="284" y2="378" stroke="var(--grid)" stroke-width="1"/>
+<text x="187.7" y="392" class="tick t2" text-anchor="middle">10 KB</text>
+<line x1="259.3" x2="259.3" y1="284" y2="378" stroke="var(--grid)" stroke-width="1"/>
+<text x="259.3" y="392" class="tick t2" text-anchor="middle">100 KB</text>
+<line x1="331.0" x2="331.0" y1="284" y2="378" stroke="var(--grid)" stroke-width="1"/>
+<text x="331.0" y="392" class="tick t2" text-anchor="middle">1 MB</text>
+<line x1="402.7" x2="402.7" y1="284" y2="378" stroke="var(--grid)" stroke-width="1"/>
+<text x="402.7" y="392" class="tick t2" text-anchor="middle">10 MB</text>
+<line x1="474.3" x2="474.3" y1="284" y2="378" stroke="var(--grid)" stroke-width="1"/>
+<text x="474.3" y="392" class="tick t2" text-anchor="middle">100 MB</text>
+<line x1="546.0" x2="546.0" y1="284" y2="378" stroke="var(--grid)" stroke-width="1"/>
+<text x="546.0" y="392" class="tick t2" text-anchor="middle">1 GB</text>
+<text x="24" y="303" class="lab">Python</text>
+<path class="s-Python" d="M116.0 286 h67.9 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-67.9 z"><title>Python: 10.1 KB</title></path>
+<text x="193.9" y="303" class="val">10.1 KB<tspan class="t2"></tspan></text>
+<text x="24" y="335" class="lab">Rust</text>
+<path class="s-Rust" d="M116.0 318 h187.4 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-187.4 z"><title>Rust: 469 KB</title></path>
+<text x="313.4" y="335" class="val">469 KB<tspan class="t2">  ·  47× Python</tspan></text>
+<text x="24" y="367" class="lab">Malbolge</text>
+<path class="s-Malbolge" d="M116.0 350 h375.2 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-375.2 z"><title>Malbolge: 196 MB</title></path>
+<text x="501.2" y="367" class="val">196 MB<tspan class="t2">  ·  19,000× Python</tspan></text>
+<text x="24" y="428" class="h">Time to play a full game</text>
+<text x="24" y="444" class="sub t2">wall clock, the same 64-shot session</text>
+<line x1="116.0" x2="116.0" y1="452" y2="546" stroke="var(--grid)" stroke-width="1"/>
+<text x="116.0" y="560" class="tick t2" text-anchor="middle">0.1 ms</text>
+<line x1="187.7" x2="187.7" y1="452" y2="546" stroke="var(--grid)" stroke-width="1"/>
+<text x="187.7" y="560" class="tick t2" text-anchor="middle">1 ms</text>
+<line x1="259.3" x2="259.3" y1="452" y2="546" stroke="var(--grid)" stroke-width="1"/>
+<text x="259.3" y="560" class="tick t2" text-anchor="middle">10 ms</text>
+<line x1="331.0" x2="331.0" y1="452" y2="546" stroke="var(--grid)" stroke-width="1"/>
+<text x="331.0" y="560" class="tick t2" text-anchor="middle">100 ms</text>
+<line x1="402.7" x2="402.7" y1="452" y2="546" stroke="var(--grid)" stroke-width="1"/>
+<text x="402.7" y="560" class="tick t2" text-anchor="middle">1 s</text>
+<line x1="474.3" x2="474.3" y1="452" y2="546" stroke="var(--grid)" stroke-width="1"/>
+<text x="474.3" y="560" class="tick t2" text-anchor="middle">10 s</text>
+<line x1="546.0" x2="546.0" y1="452" y2="546" stroke="var(--grid)" stroke-width="1"/>
+<text x="546.0" y="560" class="tick t2" text-anchor="middle">100 s</text>
+<text x="24" y="471" class="lab">Python</text>
+<path class="s-Python" d="M116.0 454 h190.0 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-190.0 z"><title>Python: 51 ms</title></path>
+<text x="316.0" y="471" class="val">51 ms<tspan class="t2">  ·  15× Rust</tspan></text>
+<text x="24" y="503" class="lab">Rust</text>
+<path class="s-Rust" d="M116.0 486 h106.8 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-106.8 z"><title>Rust: 4 ms</title></path>
+<text x="232.8" y="503" class="val">4 ms<tspan class="t2"></tspan></text>
+<text x="24" y="535" class="lab">Malbolge</text>
+<path class="s-Malbolge" d="M116.0 518 h369.8 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-369.8 z"><title>Malbolge: 16.4 s</title></path>
+<text x="495.8" y="535" class="val">16.4 s<tspan class="t2">  ·  4,700× Rust</tspan></text>
+<text x="24" y="596" class="h">Peak memory</text>
+<text x="24" y="612" class="sub t2">resident set size</text>
+<line x1="116.0" x2="116.0" y1="620" y2="714" stroke="var(--grid)" stroke-width="1"/>
+<text x="116.0" y="728" class="tick t2" text-anchor="middle">100 KB</text>
+<line x1="202.0" x2="202.0" y1="620" y2="714" stroke="var(--grid)" stroke-width="1"/>
+<text x="202.0" y="728" class="tick t2" text-anchor="middle">1 MB</text>
+<line x1="288.0" x2="288.0" y1="620" y2="714" stroke="var(--grid)" stroke-width="1"/>
+<text x="288.0" y="728" class="tick t2" text-anchor="middle">10 MB</text>
+<line x1="374.0" x2="374.0" y1="620" y2="714" stroke="var(--grid)" stroke-width="1"/>
+<text x="374.0" y="728" class="tick t2" text-anchor="middle">100 MB</text>
+<line x1="460.0" x2="460.0" y1="620" y2="714" stroke="var(--grid)" stroke-width="1"/>
+<text x="460.0" y="728" class="tick t2" text-anchor="middle">1 GB</text>
+<line x1="546.0" x2="546.0" y1="620" y2="714" stroke="var(--grid)" stroke-width="1"/>
+<text x="546.0" y="728" class="tick t2" text-anchor="middle">10 GB</text>
+<text x="24" y="639" class="lab">Python</text>
+<path class="s-Python" d="M116.0 622 h169.4 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-169.4 z"><title>Python: 10.4 MB</title></path>
+<text x="295.4" y="639" class="val">10.4 MB<tspan class="t2">  ·  4.6× Rust</tspan></text>
+<text x="24" y="671" class="lab">Rust</text>
+<path class="s-Rust" d="M116.0 654 h112.6 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-112.6 z"><title>Rust: 2.3 MB</title></path>
+<text x="238.6" y="671" class="val">2.3 MB<tspan class="t2"></tspan></text>
+<text x="24" y="703" class="lab">Malbolge</text>
+<path class="s-Malbolge" d="M116.0 686 h394.5 a4 4 0 0 1 4 4 v18 a4 4 0 0 1 -4 4 h-394.5 z"><title>Malbolge: 4.3 GB</title></path>
+<text x="520.5" y="703" class="val">4.3 GB<tspan class="t2">  ·  1,900× Rust</tspan></text>
+</svg>

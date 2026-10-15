@@ -1,0 +1,61 @@
+{
+  "machine": "Intel(R) Xeon(R) Processor @ 2.80GHz, Linux, Python 3.13.16, rustc 1.97.0 (2d8144b78 2026-07-07)",
+  "session": "shuffled_full_game.in",
+  "langs": {
+    "Python": {
+      "full_game": {
+        "seconds": 0.051009,
+        "runs": 5,
+        "peak_rss_bytes": 10395648
+      },
+      "quit_at_first_shot": {
+        "seconds": 0.022516,
+        "runs": 5,
+        "peak_rss_bytes": 10391552
+      },
+      "source_lines": 264,
+      "source_bytes": 10063,
+      "shipped_bytes": 10063,
+      "shipped": "battleship.py (needs a Python interpreter)"
+    },
+    "Rust": {
+      "full_game": {
+        "seconds": 0.003517,
+        "runs": 5,
+        "peak_rss_bytes": 2269184
+      },
+      "quit_at_first_shot": {
+        "seconds": 0.001746,
+        "runs": 5,
+        "peak_rss_bytes": 2318336
+      },
+      "source_lines": 372,
+      "source_bytes": 12676,
+      "shipped_bytes": 469184,
+      "shipped": "release binary (self-contained)"
+    },
+    "Malbolge": {
+      "full_game": {
+        "seconds": 16.412367,
+        "runs": 3,
+        "peak_rss_bytes": 4305686528,
+        "malbolge_steps": 497371084
+      },
+      "quit_at_first_shot": {
+        "seconds": 16.128365,
+        "runs": 3,
+        "peak_rss_bytes": 4305686528,
+        "malbolge_steps": 495907956
+      },
+      "source_lines": 1125,
+      "source_bytes": 44478,
+      "game_lines": 430,
+      "game_bytes": 18098,
+      "hell_lines": 116625,
+      "hell_bytes": 2250206,
+      "shipped_bytes": 195626052,
+      "shipped": "battleship.mu (needs a Malbolge Unshackled interpreter)"
+    }
+  },
+  "output_bytes": 96495
+}

@@ -1,10 +1,13 @@
 """
 Battleship, compiled to Malbolge Unshackled.
 
-All game state, the computer opponent's hunt/target logic, and the ANSI board
-rendering are generated as HeLL and assembled by LMFAO.  The host launcher only
-supplies, on stdin before play, two random fleets (Malbolge has no RNG and no
-argv); every decision after that is made by the Malbolge program.
+Everything -- the random fleets, all game state, the computer opponent's
+hunt/target logic and the ANSI board rendering -- is generated as HeLL and
+assembled by LMFAO.  Nothing runs on the host but the interpreter.  The fleets
+come from a xorshift generator whose state bits are self-encrypting code cells,
+seeded by what the player types (a Malbolge program has no other entropy):
+the admiral's name places the player's fleet, the name plus the first shot
+places the enemy's, and after that no keystroke reaches the generator.
 
 Board: 8x8.  Cell k = row*8 + col (row,col in 0..7); the shared index register
 holds col in bits 0..2 and row in bits 3..5, so no multiplication is needed.
@@ -18,7 +21,8 @@ from getc import char_code
 
 N = 8
 NCELLS = N * N
-FLEET_CELLS = 14
+SHIPS = [5, 4, 3, 2]
+FLEET_CELLS = sum(SHIPS)
 
 CLEAR = "\x1b[2J\x1b[H"
 R = "\x1b[0m"
@@ -51,7 +55,6 @@ def build():
     # AI memory
     tgt = b.bit("tgt_active")
     anchor = [b.bit("anchor%d" % i) for i in range(6)]
-    hunt = [b.bit("hunt%d" % i) for i in range(6)]
 
     acol, arow = anchor[0:3], anchor[3:6]
     ccol, crow = cand[0:3], cand[3:6]
@@ -87,23 +90,118 @@ def build():
                     bb.set_bit(was_hit, 1)
         b.dispatch_index(idx, leaf)
 
-    # ---- intro / setup ---------------------------------------------------
-    b.out(CLEAR + BOLD + CYAN + "BATTLESHIP" + R + "  (in Malbolge Unshackled)\n")
-    b.out("Loading fleets...\n")
+    # ---- intro / seeding ---------------------------------------------------
+    rng = b.rng_init()
+    b.out(CLEAR + BOLD + CYAN + "BATTLESHIP" + R + "  (in Malbolge Unshackled)\n\n")
+    b.out("Malbolge has no clock and no random source, so the sea is stirred by\n")
+    b.out("what you type.  Each key is folded into a generator built from\n")
+    b.out("self-encrypting Malbolge code cells.  Your name places your fleet.\n")
+    b.out("The enemy fleet does not exist until you fire your first shot: your\n")
+    b.out("name and that shot place it, then the shot is scored against it.\n")
+    b.out("After that the generator stops listening to the keyboard.\n\n")
+    b.out(BOLD + "Name your admiral" + R + " (any text, then Enter): ")
+    # read to end of line; getc mixes each character into the generator
+    nm = b.label("name")
+    ni = read_char()
+    nn = P.block("nn"); nc = P.block("nc")
+    eq_const(b, ni, char_code("NL_MU"), nn, nc)
+    b.cur = nc
+    ne = P.block("ne"); nk = P.block("nk")
+    eq_const(b, ni, char_code("EOF"), ne, nk)
+    b.cur = ne; b.clear_in(); b.cur.term = ("goto", nn)
+    b.cur = nk; b.clear_in(); b.cur.term = ("goto", nm)
+    b.cur = nn
+    b.clear_in()
+    # a few extra rounds so that one-letter names still differ in every bit
+    spin = [b.bit("spin%d" % i) for i in range(3)]
+    sp = b.label("spin")
+    b.rng_step()
+    b.inc(spin)
+    sd = P.block("spin_done")
+    eq_const(b, spin, 0, sd, sp)
+    b.cur = sd
 
-    # read 64 enemy cells then 64 player cells: '1' = ship.  k is compile-time,
-    # so each read is a getc + a single equality test, no dispatch.
-    for board in (eship, pship):
+    # ---- fleet placement -------------------------------------------------
+    # One routine places a fleet, one ship at a time: draw a start cell and an
+    # orientation from the generator, reject the draw if the ship would leave
+    # the board or touch a ship already placed, else commit it.  `blocked`
+    # marks every placed cell and its 8 neighbours.  If a ship fails 256 draws
+    # in a row the board is cleared and started over, so no arrangement can
+    # wedge the loop.
+    #
+    # It runs twice.  First, straight after the name, for the player's fleet.
+    # Second, after the player's first shot has been read (every key of it
+    # folded into the generator), for the enemy's fleet; the routine then
+    # seals the generator and jumps to `fire_b`, which scores that shot.
+    b.out("\nPlacing your fleet...\n")
+    setup_done = P.block("setup_done")
+    fire_b = P.block("fire")
+    sship = [b.bit("sship%d" % k) for k in range(NCELLS)]
+    blocked = [b.bit("blk%d" % k) for k in range(NCELLS)]
+    tries = [b.bit("try%d" % i) for i in range(8)]
+    second = b.bit("second_board")
+    pos, horiz = rng[0:6], rng[6]
+
+    restart = b.label("place_restart")
+    for k in range(NCELLS):
+        b.set_bit(sship[k], 0)
+        b.set_bit(blocked[k], 0)
+
+    for length in SHIPS:
+        set_reg(tries, 0)
+        attempt = b.label("place%d" % length)
+        b.rng_step()
+        placed = P.block("placed%d" % length)
+        fail = P.block("fail%d" % length)
+        hb = P.block("horiz"); vb = P.block("vert")
+        b.cur.term = ("test", horiz, hb, vb)
+        for is_h, blk in ((True, hb), (False, vb)):
+            b.cur = blk
+
+            def leaf(bb, k, is_h=is_h, length=length, placed=placed, fail=fail):
+                r, c = divmod(k, N)
+                if (c if is_h else r) + length > N:
+                    bb.cur.term = ("goto", fail)
+                    return
+                cells = [r * N + c + i if is_h else (r + i) * N + c
+                         for i in range(length)]
+                for cell in cells:
+                    nxt = P.block("free")
+                    bb.cur.term = ("test", blocked[cell], fail, nxt)
+                    bb.cur = nxt
+                halo = set()
+                for cell in cells:
+                    bb.toggle(sship[cell])          # known 0: cell is unblocked
+                    cr, cc = divmod(cell, N)
+                    for dr in (-1, 0, 1):
+                        for dc in (-1, 0, 1):
+                            if 0 <= cr + dr < N and 0 <= cc + dc < N:
+                                halo.add((cr + dr) * N + cc + dc)
+                for cell in sorted(halo):
+                    bb.set_bit(blocked[cell], 1)
+                bb.cur.term = ("goto", placed)
+            b.dispatch_index(pos, leaf)
+        b.cur = fail
+        b.inc(tries)
+        eq_const(b, tries, 0, restart, attempt)   # 256 misses: start over
+        b.cur = placed
+
+    # hand the finished board to its owner
+    with b.if_bit(second, 0):
         for k in range(NCELLS):
-            inf = read_char()
-            hit = P.block("sv1")
-            miss = P.block("sv0")
-            eq_const(b, inf, char_code(ord("1")), hit, miss)
-            b.cur = hit
-            b.set_bit(board[k], 1)
-            b.cur.term = ("goto", miss)
-            b.cur = miss
-            b.clear_in()
+            with b.if_bit(sship[k], 1):
+                b.toggle(pship[k])
+        b.toggle(second)
+        b.cur.term = ("goto", setup_done)
+    for k in range(NCELLS):
+        with b.if_bit(sship[k], 1):
+            b.toggle(eship[k])
+    # Both fleets are now fixed.  Stop listening to the keyboard: from here on
+    # the generator only feeds the computer's hunt, and play cannot steer it.
+    b.rng_seal()
+    b.out(GREY + "  (the enemy fleet is now at sea)\n" + R)
+    b.cur.term = ("goto", fire_b)
+    b.cur = setup_done
 
     # ---- rendering -------------------------------------------------------
     def render():
@@ -239,6 +337,11 @@ def build():
     b.cur = drk; b.clear_in(); b.cur.term = ("goto", dr)
     b.cur = drn; b.clear_in()
 
+    # first shot: the enemy fleet does not exist yet, so place it now (from
+    # the name and every key of this shot), then score the shot against it
+    b.cur.term = ("test", b.seeding, restart, fire_b)
+    b.cur = fire_b
+
     # resolve player's shot on the enemy board
     resolve(eship, eshot)
     with b.if_bit(already, 1):
@@ -301,15 +404,14 @@ def build():
         with b.if_bit(found, 0):
             b.set_bit(tgt, 0)   # exhausted: back to hunt
 
-    # hunt: linear scan from hunt_ptr for an unshot cell
+    # hunt: fire at a random cell not yet shot
     with b.if_bit(found, 0):
         scan = b.label("scan")
-        read_table(pshot, hunt, tmp)
+        b.rng_step()
+        read_table(pshot, pos, tmp)
         with b.if_bit(tmp, 0):
-            b.copy_bits(idx, hunt)
+            b.copy_bits(idx, pos)
             b.set_bit(found, 1)
-        # advance hunt_ptr (mod 64)
-        b.inc(hunt)
         with b.if_bit(found, 0):
             b.cur.term = ("goto", scan)
 

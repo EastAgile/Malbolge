@@ -4,3 +4,6 @@ game/*.mu
 game/*.hell
 __pycache__/
 *.pyc
+compare/rust/target/
+.pytest_cache/
+compare/measure

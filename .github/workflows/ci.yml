@@ -29,3 +29,26 @@ jobs:
           cargo build --release --target wasm32-unknown-unknown --lib
           cp target/wasm32-unknown-unknown/release/fastbolge.wasm web/
           python3 ../conformance/run.py --quiet -- node web/cli.mjs -m {mode}
+
+  battleship:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: programs/battleship
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - name: Rust version (fmt, clippy, unit tests)
+        working-directory: programs/battleship/compare/rust
+        run: |
+          cargo fmt --check
+          cargo clippy --release --all-targets -- -D warnings
+          cargo test --release
+      - name: Python and Rust against the recorded Malbolge sessions
+        run: pytest -q

@@ -25,6 +25,7 @@ class Builder:
         self.entry = self.prog.block("main")
         self.cur = self.entry
         self._getc = None
+        self.rng = None
 
     # -- low level ---------------------------------------------------------
     def bit(self, name):
@@ -134,6 +135,66 @@ class Builder:
     def while_bit(self, f):
         return _While(self, f)
 
+    # -- random numbers ----------------------------------------------------
+    # The generator's state is RNG_BITS flags, i.e. RNG_BITS code cells, each
+    # sitting at one of the two points of its own xlat2 encryption cycle.
+    # Advancing the generator is nothing but a sequence of self-encryptions of
+    # those cells: the "if x[j]: toggle x[i]" steps below are each one landing
+    # (one encryption) on cell i, guarded by a test of cell j.  The update is
+    # Marsaglia's xorshift32 (13, 17, 5), which visits every non-zero state.
+    #
+    # A Malbolge program is deterministic, so the generator has to be seeded
+    # from the one thing that differs between runs: what the player types.
+    # While the `seeding` flag is set, every character read by getc is folded
+    # into the state; rng_seal() clears it for good.
+    RNG_BITS = 32
+    RNG_INIT = 0x2545F491
+
+    def rng_init(self):
+        self.rng = [self.bit("rng%d" % i) for i in range(self.RNG_BITS)]
+        self.seeding = self.bit("rng_seeding")
+        self.toggle(self.seeding)
+        for i, f in enumerate(self.rng):     # flags start at 0
+            if (self.RNG_INIT >> i) & 1:
+                self.toggle(f)
+        return self.rng
+
+    def _xor_shift(self, shift):
+        """state ^= state << shift (shift > 0) or >> -shift, in place."""
+        x, n = self.rng, len(self.rng)
+        if shift > 0:
+            for i in range(n - 1, shift - 1, -1):    # read lower bits first
+                with self.if_bit(x[i - shift], 1):
+                    self.toggle(x[i])
+        else:
+            s = -shift
+            for i in range(0, n - s):                # read higher bits first
+                with self.if_bit(x[i + s], 1):
+                    self.toggle(x[i])
+
+    def rng_seal(self):
+        """Stop folding input into the generator from here on."""
+        self.set_bit(self.seeding, 0)
+
+    def rng_step(self):
+        self._xor_shift(13)
+        self._xor_shift(-17)
+        self._xor_shift(5)
+
+    def rng_mix(self, bits):
+        """Fold `bits` into the state, keep it non-zero, then advance."""
+        for f, s in zip(bits, self.rng):
+            with self.if_bit(f, 1):
+                self.toggle(s)
+        zero = self.prog.block("rngz")
+        ok = self.prog.block("rngok")
+        eq_const(self, self.rng, 0, zero, ok)
+        self.cur = zero
+        self.toggle(self.rng[0])
+        self.cur.term = ("goto", ok)
+        self.cur = ok
+        self.rng_step()
+
     # -- getc --------------------------------------------------------------
     # getc is one shared subroutine.  A caller sets a unique return id, jumps to
     # the entry, and the subroutine's exit dispatches the id back to the caller's
@@ -174,6 +235,12 @@ class Builder:
         from backend import emit_hell
         if self._getc is not None:
             _, ga = self._getc
+            self.cur = ga
+            if self.rng:
+                # keystrokes stir the generator until it is sealed
+                with self.if_bit(self.seeding, 1):
+                    self.rng_mix(self.in_flags)
+            ga = self.cur
             # wire the shared exit to dispatch the return id back to each caller
             targets = self._ret_targets
             self.cur = ga
